@@ -1,0 +1,48 @@
+#!/bin/bash
+
+while true; do
+    read -p "Please Enter Your IP: " IP
+
+#Split Into Octets
+    IFS='.' read -ra OCTETS <<< "$IP"
+
+#Exactly 4 Octets
+    if [ "${#OCTETS[@]}" -ne 4 ]; then
+        echo "Invalid IP: Must have exactly 4 octets."
+        continue
+    fi
+
+    valid=true
+    for OCTET in "${OCTETS[@]}"; do
+# Digits Only
+        if ! [[ "$OCTET" =~ ^[0-9]+$ ]]; then
+            echo "Invalid IP: '$OCTET' is not numeric."
+            valid=false
+            break
+        fi
+
+# No Leading Zeros
+        if [[ "$OCTET" =~ ^0[0-9]+$ ]]; then
+            echo "Invalid IP: '$OCTET' has leading zeros."
+            valid=false
+            break
+        fi
+
+# Check Range
+        if ((OCTET < 1 || OCTET > 255)); then
+            echo "Invalid IP: '$OCTET' is out of range (1–255)."
+            valid=false
+            break
+        fi
+    done
+
+    $valid && break
+done
+
+# Ping check
+if ping -c 1 -W 5 "$IP" &>/dev/null; then
+    echo "Server $IP is pingable!"
+else
+    echo "Server $IP is not pingable!"
+fi
+
