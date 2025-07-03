@@ -1,0 +1,49 @@
+#!/bin/bash
+#
+# Usage: ./ping_list.sh /path/to/ip_list.txt
+# The script creates a log file like: pinglog_<hostname>_YYYY-MM-DD.log
+# and appends one line per IP showing OK or FAIL plus latency.
+
+# ── 1. Make sure we got a file name ────────────────────────────────────────────
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <ip_list_file>"
+    exit 1
+fi
+
+IP_FILE="$1"
+
+# ── 2. Basic checks ────────────────────────────────────────────────────────────
+if [ ! -f "$IP_FILE" ]; then
+    echo "File not found: $IP_FILE"
+    exit 2
+fi
+
+# ── 3. Prepare log file ────────────────────────────────────────────────────────
+HOSTNAME=$(hostname)          # local machine’s hostname
+TODAY=$(date +%F)             # YYYY‑MM‑DD
+LOG_DIR="$HOME/ping_logs"
+mkdir -p "$LOG_DIR"
+LOG_FILE="$LOG_DIR/pinglog_${HOSTNAME}_${TODAY}.log"
+
+echo "---- $(date '+%F %T') ---- Starting ping run" >> "$LOG_FILE"
+
+# ── 4. Read each IP and ping ───────────────────────────────────────────────────
+while IFS= read -r IP || [ -n "$IP" ]; do
+    # skip empty lines or lines starting with '#'
+    [[ -z "$IP" || "$IP" =~ ^# ]] && continue
+
+    # Ping once, wait max 5 s for reply, capture result
+    if ping -c 1 -W 5 "$IP" &>/dev/null; then
+        STATUS="OK"
+        # optional: grab latency in ms
+        LATENCY=$(ping -c 1 -W 5 "$IP" | grep -oP 'time=\K[0-9.]+')
+        echo "$(date '+%T')  $IP  $STATUS  ${LATENCY}ms" >> "$LOG_FILE"
+    else
+        STATUS="FAIL"
+        echo "$(date '+%T')  $IP  $STATUS" >> "$LOG_FILE"
+    fi
+done < "$IP_FILE"
+
+echo "---- $(date '+%F %T') ---- Finished" >> "$LOG_FILE"
+echo "Results saved to $LOG_FILE"
+

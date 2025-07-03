@@ -1,0 +1,18 @@
+#!/bin/bash
+
+#Exercise 5: Write a program that saves the first and third fields of the /etc/passwd file every 
+#day in a file with the same date and does not hold it for more than two days.
+
+DIR="$HOME/passwd_backups"
+mkdir -p "$DIR"
+
+TODAY=$(date +%F)
+FILE="$DIR/passwd_$TODAY.txt"
+
+# Extract 1st and 3rd fields and join with colon
+cut -d: -f1,3 /etc/passwd > "$FILE"
+
+# Remove files older than 2 days
+find "$DIR" -type f -name "passwd_*.txt" -mtime +2 -exec rm {} \;
+
+

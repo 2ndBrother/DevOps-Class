@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Set backup destination folder
+BACKUP_DIR="$HOME/home_backups"
+mkdir -p "$BACKUP_DIR"
+
+# Create a filename with date and time
+DATE=$(date +%F_%H-%M-%S)
+TAR_FILE="$BACKUP_DIR/home_backup_$DATE.tar.gz"
+
+# Make the backup (excluding the backup folder itself to avoid infinite loops)
+tar --exclude="$BACKUP_DIR" -czf "$TAR_FILE" "$HOME"
+
+echo "Backup of home directory saved to: $TAR_FILE"
+
