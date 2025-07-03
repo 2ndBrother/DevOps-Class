@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#Exercise 6: Write a program that take a backup from home directory of your user after each
+#time user logged out.
+
 # Set backup destination folder
 BACKUP_DIR="$HOME/home_backups"
 mkdir -p "$BACKUP_DIR"

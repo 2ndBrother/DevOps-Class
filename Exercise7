@@ -1,5 +1,10 @@
 #!/bin/bash
 #
+
+#Exercise 7: Write a program that reads, pings one by one from within a file containing the list 
+#of destination IPs, and saves the result in a log file on the same day with the hostname of 
+#that machine.
+
 # Usage: ./ping_list.sh /path/to/ip_list.txt
 # The script creates a log file like: pinglog_<hostname>_YYYY-MM-DD.log
 # and appends one line per IP showing OK or FAIL plus latency.
