@@ -3,12 +3,12 @@
 #Exercise 2: Write a program that takes 20 NUMbers from the input, compares them, and 
 #states which NUMber is the largest and smallest.
 
-read -p "Enter NUMber 1: " NUM
+read -p "Enter number 1: " NUM
 MIN=$NUM
 MAX=$NUM
 
 for i in {2..20}; do
-    read -p "Enter NUMber $i: " NUM
+    read -p "Enter number $i: " NUM
     if (( NUM < MIN )); then
         MIN=$NUM
     fi
@@ -17,6 +17,6 @@ for i in {2..20}; do
     fi
 done
 
-echo "Smallest NUMber: $MIN"
-echo "Largest NUMber: $MAX"
+echo "Smallest number: $MIN"
+echo "Largest number: $MAX"
 
