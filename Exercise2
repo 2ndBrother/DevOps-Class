@@ -1,22 +1,22 @@
 #!/bin/bash
 
-#Exercise 2: Write a program that takes 20 numbers from the input, compares them, and 
-#states which number is the largest and smallest.
+#Exercise 2: Write a program that takes 20 NUMbers from the input, compares them, and 
+#states which NUMber is the largest and smallest.
 
-read -p "Enter number 1: " num
-min=$num
-max=$num
+read -p "Enter NUMber 1: " NUM
+MIN=$NUM
+MAX=$NUM
 
 for i in {2..20}; do
-    read -p "Enter number $i: " num
-    if (( num < min )); then
-        min=$num
+    read -p "Enter NUMber $i: " NUM
+    if (( NUM < MIN )); then
+        MIN=$NUM
     fi
-    if (( num > max )); then
-        max=$num
+    if (( NUM > MAX )); then
+        MAX=$NUM
     fi
 done
 
-echo "Smallest number: $min"
-echo "Largest number: $max"
+echo "Smallest NUMber: $MIN"
+echo "Largest NUMber: $MAX"
 
