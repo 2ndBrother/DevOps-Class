@@ -4,8 +4,32 @@
 #name and if it is pingable, sends its /etc/passwd file to /home/user path of that server, 
 #otherwise a message displayed that the server is not accessible.
 
+# Check for 3 arguements
+# $# is the number of entered arguements after the script name.
+if [ $# -ne 3 ]; then
+    echo "Please enter the arguements in the correct format: $0 <IP> <Username> <Password>"
+    exit 1
+fi
+
 IP=$1
 USER=$2
 PASS=$3
+
+# Ping Server
+if ping -c 1 -W 5 "$IP" &>/dev/null; then
+# &> is for overwriting both stdout and stderr. &>> is for appending them to a file. For overwrite, >[File] 2>&1 and for append >>[File] 2>&1 work as well.
+    echo "Server $IP is accessible. Transferring /etc/passwd..."
+
+# Send /etc/passwd to the remote /home/$USER/ directory using sshpass
+    sshpass -p "$PASS" scp /etc/passwd "$USER@$IP:/home/$USER/" &>/dev/null
+
+    if [ $? -eq 0 ]; then
+        echo "Transfer successful."
+    else
+        echo "Transfer failed. Check your credentials."
+    fi
+else
+    echo "Server $IP is not accessible."
+fi
 
 
