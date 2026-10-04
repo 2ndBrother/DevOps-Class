@@ -1,0 +1,25 @@
+; This UTF-8 file is converted to MT5's UTF-16LE format at container start.
+; Copy it to mt5.ini to enable it. Avoid putting passwords here unless this
+; file is managed as a protected deployment secret and backed up securely.
+
+[Common]
+; Login=100000
+; Server=Broker-Server
+; Password=
+KeepPrivate=1
+NewsEnable=1
+CertInstall=1
+ProxyEnable=0
+
+[Charts]
+MaxBars=100000
+PrintColor=1
+SaveDeleted=1
+
+[Experts]
+; Live trading is intentionally disabled in the example.
+AllowLiveTrading=0
+AllowDllImport=0
+Enabled=1
+Account=1
+Profile=1

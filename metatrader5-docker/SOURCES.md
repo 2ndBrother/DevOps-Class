@@ -1,0 +1,15 @@
+# Primary references
+
+- MetaQuotes — [Install MetaTrader 5 on Linux](https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux)
+- MetaQuotes — [Platform start, portable mode, and custom configuration](https://www.metatrader5.com/en/terminal/help/start_advanced/start)
+- MetaQuotes — [Platform data, configuration, and log directories](https://www.metatrader5.com/en/terminal/help/start_advanced/structure)
+- MetaQuotes — [Official MetaTrader 5 download page](https://www.metatrader5.com/en/download)
+- Microsoft — [Distribute the WebView2 Runtime](https://learn.microsoft.com/en-us/microsoft-edge/webview2/concepts/distribution)
+- WineHQ — [Ubuntu WineHQ packages](https://gitlab.winehq.org/wine/wine/-/wikis/Debian-Ubuntu)
+- noVNC — [Embedding and deploying noVNC](https://novnc.com/noVNC/docs/EMBEDDING.html)
+- noVNC — [Advanced usage](https://github.com/novnc/noVNC/wiki/Advanced-usage)
+- Supervisor — [Configuration file reference](https://supervisord.org/configuration.html)
+- Docker — [Compose services and file-backed secret limitations](https://docs.docker.com/reference/compose-file/services/)
+- Docker — [Compose volumes](https://docs.docker.com/reference/compose-file/volumes/)
+- Docker — [Run containers with a read-only filesystem](https://docs.docker.com/reference/cli/docker/container/run/)
+- Microsoft — [OpenSSH for Windows overview](https://learn.microsoft.com/en-us/windows-server/administration/openssh/openssh-overview)

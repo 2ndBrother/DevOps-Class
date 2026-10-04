@@ -1,0 +1,66 @@
+name: mt5
+
+services:
+  mt5:
+    image: "${MT5_IMAGE:-local/metatrader5-wine:latest}"
+    platform: linux/amd64
+    build:
+      context: .
+      args:
+        IMAGE_VERSION: "${IMAGE_VERSION:-1.0.0}"
+        MT5_INSTALLER_URL: "${MT5_INSTALLER_URL:-https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/mt5setup.exe}"
+        WEBVIEW2_INSTALLER_URL: "${WEBVIEW2_INSTALLER_URL:-https://go.microsoft.com/fwlink/p/?LinkId=2124703}"
+        MT5_INSTALLER_SHA256: "${MT5_INSTALLER_SHA256:-}"
+        WEBVIEW2_INSTALLER_SHA256: "${WEBVIEW2_INSTALLER_SHA256:-}"
+        TRADER_UID: "${TRADER_UID:-10001}"
+        TRADER_GID: "${TRADER_GID:-10001}"
+    restart: unless-stopped
+    stop_grace_period: 45s
+    environment:
+      TZ: "${MT5_TIMEZONE:-Etc/UTC}"
+      DISPLAY_WIDTH: "${DISPLAY_WIDTH:-1600}"
+      DISPLAY_HEIGHT: "${DISPLAY_HEIGHT:-900}"
+      DISPLAY_DEPTH: "${DISPLAY_DEPTH:-24}"
+      VNC_PASSWORD_FILE: /run/secrets/vnc_password
+      MT5_CONFIG_FILE: "${MT5_CONFIG_FILE:-/config/mt5.ini}"
+      MT5_TERMINAL_PATH: "${MT5_TERMINAL_PATH:-}"
+      MT5_PORTABLE: "${MT5_PORTABLE:-true}"
+      MT5_PROFILE: "${MT5_PROFILE:-}"
+      MT5_LOG_FORWARDING: "${MT5_LOG_FORWARDING:-true}"
+      MT5_LOG_TAIL_LINES: "${MT5_LOG_TAIL_LINES:-20}"
+      MT5_LOG_MAX_FILES: "${MT5_LOG_MAX_FILES:-20}"
+      MT5_LOG_SCAN_INTERVAL: "${MT5_LOG_SCAN_INTERVAL:-2}"
+      MT5_LOG_REDACT: "${MT5_LOG_REDACT:-true}"
+      WINEDEBUG: "${WINEDEBUG:--all}"
+      NOVNC_CERT_FILE: "${NOVNC_CERT_FILE:-}"
+      NOVNC_KEY_FILE: "${NOVNC_KEY_FILE:-}"
+    ports:
+      - "${NOVNC_BIND_ADDRESS:-127.0.0.1}:${NOVNC_PORT:-6080}:6080"
+    volumes:
+      - mt5-data:/home/trader/.mt5
+      - ./config:/config:ro
+      - ./certs:/certs:ro
+    secrets:
+      - vnc_password
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,mode=1777,size=1g
+      - /home/trader/.cache:rw,nosuid,nodev,uid=${TRADER_UID:-10001},gid=${TRADER_GID:-10001},mode=0700,size=256m
+    shm_size: "1gb"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+volumes:
+  mt5-data:
+    name: "${MT5_DATA_VOLUME:-mt5-data}"
+
+secrets:
+  vnc_password:
+    file: "${VNC_PASSWORD_FILE_HOST:-./secrets/vnc_password}"
